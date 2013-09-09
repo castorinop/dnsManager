@@ -1,0 +1,30 @@
+castorinop\dnsManagerBundle\Entity\Record:
+  type: entity
+  fields:
+    id:
+      id: true
+      type: integer
+      unsigned: false
+      nullable: false
+      generator:
+        strategy: IDENTITY
+    hostname:
+      type: string
+    enable:
+      type: boolean
+      default: true
+  manyToOne:
+    zone:
+      targetEntity: Zone
+      inversedBy: records
+    domain:
+      targetEntity: Record
+      inversedBy: subdomains 
+  oneToMany:
+    views:
+      targetEntity: RecordView
+      mappedBy: records
+      cascade: [ persist ]
+    subdomains:
+      targetEntity:  Record
+      mappedBy: domain

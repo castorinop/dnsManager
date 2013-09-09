@@ -1,0 +1,16 @@
+castorinop\dnsManagerBundle\Entity\Server:
+  type: entity
+  fields:
+    id:
+      id: true
+#      type: integer
+      unsigned: false
+      nullable: false
+      generator:
+        strategy: UUID
+    name:
+      type: string
+  oneToMany:
+    views:
+      targetEntity: ServerView
+      mappedBy: server

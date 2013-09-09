@@ -1,0 +1,43 @@
+{% for record in records %}
+	<div class="row">
+		<div class="span12">
+			<strong>
+				<a href="{{ path('dns_manager_host_edit', {'id': record.id }) }}"> 
+					{{ record.hostname }}
+				</a>
+			</strong>
+			{% for v in record.views %}
+				<div class="row">
+					<div class="span1">	</div>
+						<a href="{{ path('dns_manager_hostview_edit', {'id': v.id }) }}">
+						<div class="span1"> 
+						 {{ v.ttl }}</div>
+						 <div class="span2"> IN {{ v.recordtype }}
+						 {% if v.mx %} {{ v.mx }} {% endif %}
+						 </div>
+						 <div class="span5"> {{ v.destination }}</div>
+						 <div class="span2">{% if view is null %} ON {{ v.view }} {% endif %}</div>
+						 </a>
+						 
+						
+				</div>
+			{% endfor %}
+
+	</div>
+{# 			{% for subd in record.subdomains %}#}
+{# 				<li><a href="{{ path('dns_manager_host', {'domain': domain, 'host': record ~"/"~ subd.hostname}) }}">{{ subd.hostname }}</a></li>#}
+{# 			{% endfor %}#}
+{# 			</ul>#}
+{# 			</div>#}
+{# 			{% set host = hostname is defined ? hostname ~ "/" ~ record.hostname : record.hostname %}#}
+{# 				<div class="zone-tools pull-right">#}
+{# 					<a href="{{ path('dns_manager_host_edit', {'domain': domain, 'host': record.url(false)|reverse|join('/') }) }}">edit</a>#}
+{# 					<a href="{{ path('dns_manager_host', {'domain': domain, 'host': record.url(false)|reverse|join('/') }) }}">show</a>#}
+{# 					<a href="#">{{  not record.enable ? 'enable' : 'disable' }}</a>#}
+{# 					<a href="#">delete</a>#}
+{# 				</div>#}
+{# 			</div>#}
+{# 		</div>#}
+{# 	</div>                   #}
+</div>
+{% endfor %}

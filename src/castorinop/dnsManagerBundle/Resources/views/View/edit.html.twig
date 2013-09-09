@@ -1,0 +1,12 @@
+{% extends 'ToaTwitterBootstrapBundle::layout.html.twig' %}
+{% block title %} Edit Host {% endblock %}
+{% block content %}
+		<form class="form-horizontal" action="{{ path('dns_manager_view_update', {'domain': domain, 'host': host}) }}" method="post" {{ form_enctype(form) }}>
+		<div>			
+				{{ form_widget(form) }}
+		</div>
+			<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+			<button class="btn btn-primary">Save changes</button>
+		</div>
+		</form>
+{% endblock %}

@@ -1,0 +1,71 @@
+{% extends 'ToaTwitterBootstrapBundle::layout.html.twig' %}
+{% block title %} {{ domain }} {% endblock %}
+{% set records = dom.records|default('') %}
+{% block content %}
+<div class='clearfix'>
+<div class="pull-left">
+<h2 >{{ domain }} <small>{% if dom.alias %} Alias  {% endif %}Zone</small>
+</h2>
+<h6>
+{% if dom.alias %}
+	Alias of <a href="{{ path('dns_manager_zone', {'domain': dom.alias.domain}) }}">{{ dom.alias }}</a> 
+{% endif %}
+{% if dom.aliases |length %}
+	Aliases: 
+	{% for a in dom.aliases %}
+	<a href="{{ path('dns_manager_zone', {'domain': a.domain}) }}">{{ a }}</a>
+	{% endfor %} 
+{% endif %}
+</h6>
+</div>
+	<form class="form-search pull-right" method="post">
+		{% if dom.alias %}
+		<a class="btn" href="{{ path('dns_manager_zone_delete', {'id': dom.id}) }}" title="Remove Zone" data-toggle="modal"><i class="icon-remove"></i></a>
+		{% else %}
+		<div class="input-prepend">
+			<a class="btn" href="#newzone" title="Create Host" data-toggle="modal"><i class="icon-plus"></i></a>
+		</div>
+		
+		<input type="text" id="search" name="search" value='' autocomplete="off" placeholder="Buscar" data-remote="{{ path('dns_manager_host_search', {'domain': dom}) }}">
+		<div class="input-append">
+	    	<button type="submit" class="btn"><i class="icon-search"></i></button>
+	    </div>
+	    {% endif %}
+	</form>
+</div>
+	<div id="newzone" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h3 id="myModalLabel">New Host</h3>
+		</div>
+		<form class="form-horizontal" action="{{ path('dns_manager_host_create', {'domain': dom}) }}" method="post" {{ form_enctype(form) }}>
+		<div class="modal-body">			
+				{{ form_widget(form) }}
+		</div>
+		<div class="modal-footer">
+			<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+			<button class="btn btn-primary">Save changes</button>
+		</div>
+		</form>
+	</div>
+	
+{% if not dom.alias %}
+<div class="">
+	<ul class="nav nav-tabs">
+	 <li class="_active"> <a href="#">Views: </a> </li>
+{% for v in views %}
+    <li class="{% if view == v %}active{% endif %}">
+    <a href="{{ path('dns_manager_zone_view', {'domain': domain, 'view': v}) }}">{{ v }}</a>
+    </li>
+{% endfor %}
+	<li class="{% if view is null %}active{% endif %}"> 
+		<a href="{{ path('dns_manager_zone', {'domain': domain}) }}">all</a> 
+	</li>
+</ul>
+</div>
+	
+<div class="accordion clearfix" id="list">
+{% include 'dnsManagerBundle:Host:list_clear.html.twig' %}
+</div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,33 @@
+castorinop\dnsManagerBundle\Entity\RecordView:
+  type: entity
+  fields:
+    id:
+      id: true
+      type: integer
+      unsigned: false
+      nullable: false
+      generator:
+        strategy: IDENTITY
+    destination:
+        type: string
+    recordtype:
+      type: string
+    mx:
+      type: integer
+      nullable: true  
+    ttl:
+      type: integer
+      nullable: true
+    enable:
+      type: boolean
+      default: true
+  manyToOne:
+    records:
+      targetEntity: Record
+      inversedBy: views
+      cascade: [ persist, remove ]
+    view:
+      targetEntity: View
+      inversedBy: records
+      cascade: [ persist, remove ]
+      

@@ -1,0 +1,12 @@
+
+<h1>{{ dom.domain }}</h1>
+<h2>Records</h2>
+<div>
+{% for record in dom.records %}
+   <li><a href="{{ path('dns_manager_host', {'domain': dom.domain, 'host': record.hostname}) }}">{{ record.hostname }}</a>
+    		{% for view in record.views %}
+    			{{ view.destination }} ({{ view.view.name }})
+    		{% endfor %}
+   </li>
+ {% endfor %}
+</div>

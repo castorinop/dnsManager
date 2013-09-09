@@ -1,0 +1,18 @@
+{% extends 'ToaTwitterBootstrapBundle::layout.html.twig' %}
+{% block title %} Server {{ server }} config {% endblock %}
+{% block content %}
+<div class="container">
+	<h2 class="pull-left">{{ server }}<small>server</small></h2>
+	<form class="form-search pull-right" method="post">
+{# 	FIXME: add deploy		<div>#}
+{# 				<a class="btn" href="#deployzone" title="Deploy Zone" data-toggle="modal"><i class="icon-download"></i></a>#}
+{# 				</div>#}
+	</form>
+</div>
+
+<code style="display: block;">
+{{ include('dnsManagerBundle:Server:named.conf.twig') |nl2br }}
+</code> 
+{{ include('dnsManagerBundle:Server:config.zones.html.twig') }}
+</div>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends 'ToaTwitterBootstrapBundle::layout.html.twig' %}
+{% block title %} {{ domain }} {% endblock %}
+{% block content %}
+<h2>{{ domain }}<small>export zone</small></h2>
+	{% for srv, msg in msgs %}
+		<h3>{{ srv }}</h3>
+		{% if msg |length == 0 %} 
+				<div class="alert alert-error">
+					no views or servers related.
+				</div>
+		{% endif %}
+		<blockquote>
+		{% for v,s in msg %}
+			<h4>{{ v }}</h4>
+			<blockquote>
+			{% for k,m in s %}
+				<div class="alert {% if m == 'Ok!' %}alert-success{% else %}alert-error{% endif %}">
+					<strong>{{k}}</strong>: {{ m }}
+				</div>
+			{% endfor %}
+			</blockquote>
+		{% endfor %}
+		</blockquote>
+	{% endfor %}
+	
+{% endblock %}

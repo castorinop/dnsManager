@@ -1,0 +1,40 @@
+{% for record in records %}
+	<div class="accordion-group">
+		<div class="accordion-heading">
+			<a class="accordion-toggle" data-toggle="collapse" data-parent="#record-list" href="#collapseHost{{ record.id }}">
+			<h4><i class='icon-{{  record.enable ? 'play' : 'pause' }}'></i>
+				{{ record.hostname }} 
+			</h4>
+			</a>
+		</div>
+		<div id="collapseHost{{ record.id }}" class="accordion-body collapse ">
+			<div class="accordion-inner">
+			<div>
+			Views:<br/>
+			<ul>
+			{% for view in record.views %}
+				<li>
+					<a href="#"> {{ view.recordtype }} {{ view.destination }}</a> ;{{ view.view }}
+				</li>
+			{% endfor %}
+			</ul>
+			</div>
+			<div>
+				Subdomains: <br/>
+				<ul>
+			{% for subd in record.subdomains %}
+				<li><a href="{{ path('dns_manager_host', {'domain': domain, 'host': record ~"/"~ subd.hostname}) }}">{{ subd.hostname }}</a></li>
+			{% endfor %}
+			</ul>
+			</div>
+			{% set host = hostname is defined ? hostname ~ "/" ~ record.hostname : record.hostname %}
+				<div class="zone-tools pull-right">
+					<a href="{{ path('dns_manager_host_edit', {'domain': domain, 'host': record.url(false)|reverse|join('/') }) }}">edit</a>
+					<a href="{{ path('dns_manager_host', {'domain': domain, 'host': record.url(false)|reverse|join('/') }) }}">show</a>
+					<a href="#">{{  not record.enable ? 'enable' : 'disable' }}</a>
+					<a href="#">delete</a>
+				</div>
+			</div>
+		</div>
+	</div>                   
+{% endfor %}

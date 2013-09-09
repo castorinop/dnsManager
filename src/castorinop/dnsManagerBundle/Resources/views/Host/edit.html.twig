@@ -1,0 +1,53 @@
+{% extends 'ToaTwitterBootstrapBundle::layout.html.twig' %}
+
+{% macro widget_prototype(widget, remove_text) %}
+    {% if widget.get('prototype') %}
+        {% set form = widget.get('prototype') %}
+        {% set name = widget.get('prototype').get('name') %}
+    {% else %}
+        {% set form = widget %}
+        {% set name = widget.get('full_name') %}
+    {% endif %}
+    	{{ form_errors(form) }}
+        {{ form_widget(form.enable, {'attr': {'require': 'null'}}) }}
+        {{ form_widget(form.ttl, {'attr': {'class': 'span1'}}) }} IN 
+        {{ form_widget(form.recordtype, {'attr': {'class': 'span1'}}) }} 
+        {{ form_widget(form.destination) }} 
+        ON {{ form_widget(form.view) }}
+{% endmacro %}
+
+
+{% block title %} Edit Host {% endblock %}
+{% block content %}
+<h1><a href="{{ path('dns_manager_zone', {'domain': domain}) }}">{{ domain }}</a><small>zone</small></h1>
+		<form class="form-horizontal" action="{{ path('dns_manager_host_update', {'id': record.id}) }}" method="post" {{ form_enctype(form) }}>
+		<div>
+			<label>Host</label>			
+			{{ form_widget(form.enable) }}
+			{{ form_widget(form.hostname) }}
+			
+			<label>Views</label>
+			<ul class="views" data-prototype="{{ _self.widget_prototype(form.views, 'Remove view')|escape }}">
+            {% for widget in form.views.children %}
+                <li>{{ _self.widget_prototype(widget, 'Remove view') }}</li>
+            {% endfor %}
+            
+{# 			{% for view in form.views %}#}
+{# 				{{ form_errors(view.ttl) }}#}
+{#             	<li>#}
+{#             		{{ form_widget(view.enable, {'attr': {'require': 'null'}}) }}#}
+{#             		{{ form_widget(view.ttl, {'attr': {'class': 'span1'}}) }} IN #}
+{#             		{{ form_widget(view.recordtype, {'attr': {'class': 'span1'}}) }} #}
+{#             		{{ form_widget(view.destination) }} #}
+{#             		ON {{ form_widget(view.view) }}#}
+{#             	</li>#}
+{#         	{% endfor %}#}
+        	</ul>
+        	{{ form_rest(form) }}
+		</div>
+			<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+			<button class="btn btn-primary">Save changes</button>
+		</div>
+		</form>
+		
+{% endblock %}

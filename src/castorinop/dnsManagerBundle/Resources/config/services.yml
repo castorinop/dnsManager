@@ -1,0 +1,7 @@
+parameters:
+#    dns_manager.example.class: castorinop\dnsManagerBundle\Example
+
+services:
+#    dns_manager.example:
+#        class: %dns_manager.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

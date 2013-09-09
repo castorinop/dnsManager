@@ -1,0 +1,21 @@
+castorinop\dnsManagerBundle\Entity\View:
+  type: entity
+  fields:
+    id:
+      id: true
+      type: integer
+      unsigned: false
+      nullable: false
+      generator:
+        strategy: IDENTITY
+    name:
+      type: string
+  oneToMany:
+    records:
+      targetEntity: RecordView
+      mappedBy: view
+      cascade: [ persist, remove ]
+    servers:
+      targetEntity: ServerView
+      mappedBy: view
+      cascade: [ persist, remove ]

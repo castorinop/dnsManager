@@ -1,0 +1,23 @@
+# named.conf
+
+# Keys
+
+{% for k in keys %}
+key "key-{{ k.view }}" {
+  algorithm hmac-md5;
+  secret "{{ k.tsig }}"; 
+};
+{% endfor %}
+
+# Zones
+
+{% for z in rows %}
+# {{ z.domain }} on {{ z.view }} 
+	zone "{{ z.domain  }}" IN {
+	type {{ z.type }};
+	file "{{ z.type }}/{{ z.view }}-{{z.domain }}";
+	allow-update { key "key-{{ z.view }}"; };
+	allow-transfer { key "key-{{ z.view }}"; };
+};
+
+{% endfor %}

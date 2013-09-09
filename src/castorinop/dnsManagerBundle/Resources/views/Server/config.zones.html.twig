@@ -1,0 +1,10 @@
+{% for z in rows %}
+<div>
+<br/>
+	<code>
+	
+	# file "{{ z.type }}/{{ z.view }}-{{z.domain }}";<br/>
+	{{ include('dnsManagerBundle:Server:empty.zone.twig') |nl2br }}
+	</code>
+</div>
+{% endfor %}

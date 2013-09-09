@@ -1,0 +1,29 @@
+{% for zone in doms %}
+	<div class="row">
+		<div class="span5">
+			<h4><i class='icon-{{  zone.enable ? 'play' : 'pause' }}'></i>
+				{{ zone.domain }}
+				{% if zone.aliases|length > 0 %}
+				<br/><small> aliases:
+					{% for alias in zone.aliases %}
+						<a href="{{ path('dns_manager_zone', {'domain': alias.domain}) }}">{{ alias }}</a>  
+					{% endfor %}
+				</small>
+				{% endif %} 
+				{% if zone.alias %}
+				<br/><small> alias of {{ zone.alias }}</small>
+				{% endif %}
+			</h4>
+		</div>
+		
+		<div class="zone-tools pull-right">
+					<a href="{{ path('dns_manager_zone_edit', {'domain': zone.domain}) }}"><i class="icon-edit"></i>edit</a>
+					<a href="{{ path('dns_manager_zone', {'domain': zone.domain}) }}"><i class="icon-eye-open"></i>show</a>
+					<a href="#">{{  not zone.enable ? 'enable' : 'disable' }}</a>
+					<a href="{{ path('dns_manager_zone_export', {'zone': zone.domain}) }}"><i class="icon-download"></i>export</a>
+					<a href="{{ path('dns_manager_zone_delete', {'id': zone.id}) }}"><i class="icon-remove"></i>delete</a>
+		</div>
+			
+		
+	</div>                   
+{% endfor %}

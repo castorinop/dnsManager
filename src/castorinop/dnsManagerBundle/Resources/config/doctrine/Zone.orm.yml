@@ -1,0 +1,53 @@
+castorinop\dnsManagerBundle\Entity\Zone:
+  type: entity
+  fields:
+    id:
+      id: true
+      type: integer
+      unsigned: false
+      nullable: false
+      generator:
+        strategy: IDENTITY
+    domain:
+      type: string
+    ttl:
+      type: string
+      default: 86400
+    soa:
+      type: string
+    mail:
+      type: string
+    serial:
+      type: string
+    refresh:
+      type: integer
+      default: 172800
+    retry:
+      type: integer
+      default: 900
+    expire:
+      type: integer
+      default: 1209600
+    defttl:
+      type: integer
+      default: 86400
+    enable:
+      type: boolean
+      default: true
+      
+  oneToMany:
+    records:
+      targetEntity: Record
+      mappedBy: zone
+      cascade: [ persist, remove ]
+    aliases:
+      targetEntity: Zone
+      mappedBy: alias
+      
+  manyToOne:
+    alias:
+      targetEntity: Zone
+      inversedBy: aliases
+  
+      
+    

@@ -1,0 +1,26 @@
+{% for serv in servers %}
+	<div class="accordion-group">
+		<div class="accordion-heading">
+			<a class="accordion-toggle" data-toggle="collapse" data-parent="#list" href="#collapse{{ serv.id }}">
+			<h4>
+				{{ serv }} 
+			</h4>
+			</a>
+		</div>
+		<div id="collapse{{ serv.id }}" class="accordion-body collapse ">
+			<div class="accordion-inner">
+			<ul>
+{# 						{% for v in serv.records %}#}
+{# 							<li>{{ v }}</li>						#}
+{# 						{% endfor %}#}
+					</ul>
+				<div class="zone-tools pull-right">
+{# 					<a href="{{ path('dns_manager_zone_edit', {'domain': zone.domain}) }}">edit</a>#}
+{# 					<a href="{{ path('dns_manager_zone', {'domain': zone.domain}) }}">show</a>#}
+{# 					<a href="#">{{  not zone.enable ? 'enable' : 'disable' }}</a>#}
+					<a href="{{ path('dns_manager_view_delete', {'id': serv.id}) }}">delete</a>
+				</div>
+			</div>
+		</div>
+	</div>                   
+{% endfor %}

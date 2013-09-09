@@ -1,0 +1,42 @@
+{% for zone in doms %}
+	<div class="accordion-group">
+		<div class="accordion-heading">
+			<a class="accordion-toggle" data-toggle="collapse" data-parent="#list" href="#collapse{{ zone.id }}">
+			<h4><i class='icon-{{  zone.enable ? 'play' : 'pause' }}'></i>
+				{{ zone.domain }}
+				{% if zone.aliases|length > 0 %}
+				<br/><small> aliases:
+					{% for alias in zone.aliases %}
+						{{ alias }},  
+					{% endfor %}
+				</small>
+				{% endif %} 
+				{% if zone.alias %}
+				<br/><small> alias of {{ zone.alias }}</small>
+				{% endif %}
+			</h4>
+			</a>
+		</div>
+		<div id="collapse{{ zone.id }}" class="accordion-body collapse ">
+			<div class="accordion-inner">
+				<code>
+				{{zone.domain }}. IN SOA {{ zone.soa }}.{{ zone.domain }}. {{ zone.mail }}. (
+					<ul>
+					<li>{{ zone.serial }} ; serial </li>
+					<li>{{ zone.refresh }} ; refresh </li>
+					<li>{{ zone.retry }} ; retry </li>
+					<li>{{ zone.expire }} ; expire </li>
+					<li>{{ zone.defttl}} ; minimum </li>
+					</ul>
+				)
+				</code>
+				<div class="zone-tools pull-right">
+					<a href="{{ path('dns_manager_zone_edit', {'domain': zone.domain}) }}">edit</a>
+					<a href="{{ path('dns_manager_zone', {'domain': zone.domain}) }}">show</a>
+					<a href="#">{{  not zone.enable ? 'enable' : 'disable' }}</a>
+					<a href="{{ path('dns_manager_zone_delete', {'id': zone.id}) }}">delete</a>
+				</div>
+			</div>
+		</div>
+	</div>                   
+{% endfor %}

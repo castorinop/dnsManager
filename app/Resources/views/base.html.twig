@@ -1,0 +1,48 @@
+{% set croute = app.request.attributes.get('_route') %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>{% block title %}Welcome!{% endblock %} - dnsManager</title>
+        {% block stylesheets %}{% endblock %}
+        <link rel="stylesheet" type="text/css" href="{{ asset('bundles/dnsmanager/css/dnsManager.css') }}" />
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+    </head>
+    <body>
+    	<div class="container">
+    	<div class="navbar">
+			  <div class="navbar-inner">
+			  	<a class="brand" href="#">dnsManager</a> 
+			  	<ul class="nav">
+			   		<li {% if croute == 'dns_manager_homepage' %} class="active" {% endif %}>
+			   			<a href="{{ path('dns_manager_homepage') }}">Zones</a></li>
+			   		<li {% if croute == 'dns_manager_servers' %} class="active" {% endif %}>
+			   			<a href="{{ path('dns_manager_servers') }}">Servers</a></li>
+			   		<li{% if croute == 'dns_manager_views' %} class="active" {% endif %}>
+			   			<a href="{{ path('dns_manager_views') }}">Views</a></li>
+			   	</ul>
+			   </div>
+			 </div>
+		</div>
+		
+		<div class="container">
+			{% for type, messages in app.session.flashbag.all() %}
+				{% for message in messages %}
+		    <div class="alert alert-{{ type }}">
+		        {{ message|trans}}
+		    </div>
+		    	{% endfor %}
+			{% endfor %}
+		</div>
+		
+        {% block body %}
+		
+        {% block content %} CONTENIDO {% endblock %}
+        {% endblock %}
+        {% block javascripts %}
+        <script src="{{ asset('bundles/dnsmanager/js/jquery.typewatch.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('bundles/dnsmanager/js/search.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('bundles/dnsmanager/js/views.js') }}" type="text/javascript"></script>
+        {% endblock %}
+    </body>
+</html>

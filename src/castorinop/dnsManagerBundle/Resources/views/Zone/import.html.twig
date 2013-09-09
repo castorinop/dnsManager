@@ -1,0 +1,90 @@
+{% extends 'ToaTwitterBootstrapBundle::layout.html.twig' %}
+{% block title %} {{ domain }} {% endblock %}
+{% block content %}
+<div class='clearfix'>
+<h2 class="pull-left">{{ domain }}
+	<small>Import Zone</small>
+</h2>
+	<form class="form-search pull-right" method="post">
+			<div class="input-prepend">
+				<a class="btn" href="#newzone" title="Crear paciente" data-toggle="modal"><i class="icon-plus"></i></a>
+				</div>
+				<input type="text" id="search" name="search" value='' autocomplete="off" placeholder="Buscar" data-remote="{{ path('dns_manager_host_search', {'domain': domain}) }}">
+				<div class="input-append">
+		    <button type="submit" class="btn"><i class="icon-search"></i></button>
+		    </div>
+	</form>
+</div>
+	<div id="newzone" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h3 id="myModalLabel">New Host</h3>
+		</div>
+		<form class="form-horizontal" action="{{ path('dns_manager_host_create', {'domain': domain}) }}" method="post"> >
+		<div class="modal-body">			
+{# 				{{ form_widget(form) }}#}
+		</div>
+		<div class="modal-footer">
+			<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+			<button class="btn btn-primary">Save changes</button>
+		</div>
+		</form>
+	</div>
+	{% if error %}
+		<div class="alert alert-error"> {{ error.message }}</div>
+	{% else %}
+<h2>Objects</h2>
+<div class="accordion" id="list">
+ {% if not zone.id %}+{%else%}&nbsp;{% endif %}
+ {{zone.domain }}. IN SOA {{ zone.soa }}.{{ zone.domain }}. {{ zone.mail }}. 
+				 (
+				 <br>{{ zone.serial }} 
+				{{ zone.refresh }} 
+				{{ zone.retry }}
+				{{ zone.expire }}
+				{{ zone.defttl}})
+
+{% for r in zone.records %}
+{# <div class="row">#}
+{# <div class="span3">{{ form_widget(r.records, {'empty_value': r.records.vars.value}) }}</div> {{ r.records.vars.value }}#}
+{# <div class="span1">{{ form_widget(r.recordtype,{'attr': {'class': 'input-mini'} }) }}</div>#}
+{# <div class="span1">{{ form_widget(r.ttl, {'attr': {'class': 'input-mini'} }) }}</div>#}
+{# <div class="span4">{{ form_widget(r.destination) }}</div>#}
+{# <div class="span2">{{ form_widget(r.view) }}</div>#}
+{# </div>#}
+<div class="row">
+	
+	<div class="span12">
+		{% if not r.id %}+{%else%}&nbsp;{% endif %}
+		<strong>{{ r.hostname }}</strong>
+{% for v in r.views %}
+	{% if v.view == view.name %}
+	<div class="row">
+		<div class="span1">{% if not v.id %}+{% endif %}</div>
+		<div class="span1">{{ v.ttl }}</div>
+		<div class="span2"> IN {{ v.recordtype }}{% if v.mx %} {{ v.mx }} {% endif %}</div>
+		<div class="span5">{{ v.destination }}</div>
+		<div class="span2">{{ v.view }}</div>
+	</div>
+	{% endif %}
+{% endfor %}
+	</div>
+</div>
+{% endfor %}
+
+
+{# {% include 'dnsManagerBundle:Host:list.html.twig' %}#}
+</div>
+	<form action="{{ path('dns_manager_zone_import') }}" method="post">
+	<legend>Import</legend>
+	{{ form_widget(import.domain, { 'attr': { 'readonly': 'true' }} ) }}
+	{{ form_widget(import.server, { 'attr': { 'readonly': 'true' }}) }}
+	{{ form_widget(import.keyname, { 'attr': { 'readonly': 'true' }}) }}
+	{{ form_widget(import.key, { 'attr': { 'readonly': 'true' }}) }}
+	{{ form_widget(import.view, { 'attr': { 'readonly': 'true' }}) }}
+	{{ form_widget(import.flush, { 'attr': { 'readonly': 'true' }}) }}
+	<input class="btn" type="submit" name="confirm" value="Confirm"/>
+	<input class="btn" type="submit" name="update" value="Update"/>
+	</form>
+{% endif %}
+{% endblock %}

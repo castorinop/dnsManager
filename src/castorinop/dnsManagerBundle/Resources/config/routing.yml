@@ -1,0 +1,114 @@
+dns_manager_homepage:
+    pattern:  /
+    defaults: { _controller: dnsManagerBundle:Zone:index }
+
+dns_manager_servers:
+    pattern:  /servers
+    defaults: { _controller: dnsManagerBundle:Server:index }
+    
+dns_manager_server_create:
+    pattern:  /servers/create
+    defaults: { _controller: dnsManagerBundle:Server:update }
+
+dns_manager_server_delete:
+    pattern:  /servers/delete/{id}
+    defaults: { _controller: dnsManagerBundle:Server:delete }
+
+dns_manager_server_config:
+    pattern:  /servers/config/{server}
+    defaults: { _controller: dnsManagerBundle:Server:config }
+
+dns_manager_views:
+    pattern:  /views
+    defaults: { _controller: dnsManagerBundle:View:index }
+    
+dns_manager_view_create:
+    pattern:  /views/create
+    defaults: { _controller: dnsManagerBundle:View:update }
+    
+dns_manager_view_delete:
+    pattern:  /view/delete/{id}
+    defaults: { _controller: dnsManagerBundle:View:delete }
+
+dns_manager_server_view_create:
+    pattern:  /server/view/create
+    defaults: { _controller: dnsManagerBundle:ServerView:create }
+    
+dns_manager_server_view_update:
+    pattern:  /server-view/update
+    defaults: { _controller: dnsManagerBundle:ServerView:update }
+    
+
+dns_manager_zone_import:
+    pattern:  /zone/import
+    defaults: { _controller: dnsManagerBundle:Zone:import }
+
+dns_manager_zone_export:
+    pattern:  /zone/{zone}/export
+    defaults: { _controller: dnsManagerBundle:Zone:export }
+
+dns_manager_zone_create:
+    pattern:  /zone/create
+    defaults: { _controller: dnsManagerBundle:Zone:update }
+
+dns_manager_zone_delete:
+    pattern:  /zone/delete/{id}
+    defaults: { _controller: dnsManagerBundle:Zone:delete }
+    
+dns_manager_zone_view:
+    pattern:  /zone/{domain}/view/{view}
+    defaults: { _controller: dnsManagerBundle:Zone:show }
+
+dns_manager_zone:
+    pattern:  /zone/{domain}
+    defaults: { _controller: dnsManagerBundle:Zone:show }
+
+dns_manager_zone_edit:
+    pattern:  /zone/edit/{domain}
+    defaults: { _controller: dnsManagerBundle:Zone:edit }
+
+dns_manager_zone_update:
+    pattern:  /zone/update/{domain}
+    defaults: { _controller: dnsManagerBundle:Zone:update }
+        
+dns_manager_zone_search:
+    pattern:  /zone/search
+    defaults: { _controller: dnsManagerBundle:Zone:search }
+
+dns_manager_host_create:
+    pattern:  /host/create
+    defaults: { _controller: dnsManagerBundle:Host:update }
+
+dns_manager_host_search:
+    pattern:  /zone/{domain}/search
+    defaults: { _controller: dnsManagerBundle:Host:search }
+
+dns_manager_host_edit:
+    pattern:  /host/edit/{id}
+    requirements:
+      host: .*
+    defaults: { _controller: dnsManagerBundle:Host:edit }
+
+dns_manager_host:
+    pattern:  /zone/{domain}/{host}
+    requirements:
+      host: .*
+    defaults: { _controller: dnsManagerBundle:Host:index }
+
+dns_manager_host_update:
+    pattern:  /host/update/{id}
+    defaults: { _controller: dnsManagerBundle:Host:update }
+    
+dns_manager_hostview_edit:
+    pattern:  /hostview/edit/{id}
+    defaults: { _controller: dnsManagerBundle:RecordView:edit }
+    
+dns_manager_hostview_create:
+    pattern:  /hostview/create
+    defaults: { _controller: dnsManagerBundle:RecordView:update }
+    
+dns_manager_hostview_update:
+    pattern:  /hostview/update/{id}
+    defaults: { _controller: dnsManagerBundle:RecordView:update }
+
+        

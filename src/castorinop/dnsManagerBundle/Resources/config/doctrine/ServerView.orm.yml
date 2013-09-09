@@ -1,0 +1,23 @@
+castorinop\dnsManagerBundle\Entity\ServerView:
+  type: entity
+  fields:
+    id:
+      id: true
+      type: integer
+      unsigned: false
+      nullable: false
+      generator:
+        strategy: IDENTITY
+    type:
+        type: string
+    tsig:
+        type: string
+    ip:
+      type: string
+  manyToOne:
+    server:
+      targetEntity: Server
+      inversedBy: views
+    view:
+      targetEntity: View
+      inversedBy: servers

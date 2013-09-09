@@ -1,0 +1,20 @@
+{% for view in views %}
+	<div class="accordion-group">
+		<div class="accordion-heading">
+			<a class="accordion-toggle" data-toggle="collapse" data-parent="#view-list" href="#collapseHostView{{ view.id }}">
+			<h4>
+				{{ view.recordtype }} {{ view.destination }} 
+			</h4>
+			</a>
+		</div>
+		<div id="collapseHostView{{ view.id }}" class="accordion-body collapse ">
+			<div class="accordion-inner">
+				<div class="zone-tools pull-right">
+					<a href="{{ path('dns_manager_hostview_edit', {'id': view.id}) }}">edit</a>
+{# 					<a href="{{ path('dns_manager_host', {'domain': view.zone.domain, 'host': view.hostname}) }}">show</a>					#}
+ 					<a href="#">delete</a>
+				</div>
+			</div>
+		</div>
+	</div>                   
+{% endfor %}
