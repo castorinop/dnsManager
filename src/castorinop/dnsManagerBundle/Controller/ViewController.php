@@ -22,7 +22,7 @@ class ViewController extends Controller
     		$form = $this->createForm(new ViewType(), $zone);
     		
     		$servers = $this->getDoctrine()
-    			->getEntityManager()
+    			->getManager()
     			->getRepository('dnsManagerBundle:View')->findAll();
     		
         return $this->render('dnsManagerBundle:View:index.html.twig', 
@@ -32,27 +32,27 @@ class ViewController extends Controller
         				));
     }
     
-    public function showAction($domain)
+    public function showAction($id)
     {
     	
     	$zone = $this->getDoctrine()
-    	->getEntityManager()
-    	->getRepository('dnsManagerBundle:View')
-    	->findOneByDomain($domain);
+    	->getManager()
+    	->getRepository('dnsManagerBundle:View')->find($id);
+    	#->findOneByDomain($domain);
     
 //     	if (count($domain))
     	
-    	$host = new Record();
-    	$host->setView($zone);
+    	#$host = new View();
+    	#$host->setView($zone);
     	
-    	$form = $this->createForm(new RecordType(), $host);
+    	#$form = $this->createForm(new ViewType(), $host);
     		 
     		
     	return $this->render('dnsManagerBundle:View:show.html.twig', 
     				array(
-    						'dom' => $zone,
-    						'domain' => $zone->getDomain(),
-    						'form' => $form->createView()
+    						'view' => $zone,
+    						#'domain' => $zone->getDomain(),
+    						#'form' => $form->createView()
     				)
     			);
     }
@@ -61,7 +61,7 @@ class ViewController extends Controller
     {
     	if ($domain) {
     		$zone = $this->getDoctrine()
-    		->getEntityManager()
+    		->getManager()
     		->getRepository('dnsManagerBundle:View')
     		->findOneByDomain($domain);
       } else 
@@ -73,7 +73,7 @@ class ViewController extends Controller
     	
     	if ($form->isValid()) {
     		$em = $this->getDoctrine()
-    			->getEntityManager();
+    			->getManager();
     		
     		$em->persist($zone);
     		$em->flush();
@@ -95,7 +95,7 @@ class ViewController extends Controller
     {
     
     	$record = $this->getDoctrine()
-    	->getEntityManager()
+    	->getManager()
     	->getRepository('dnsManagerBundle:View')
     	->findOneById($id);
         			    
@@ -111,12 +111,12 @@ class ViewController extends Controller
     
     public function deleteAction($id) {
     	$obj = $this->getDoctrine()
-    		->getEntityManager()
+    		->getManager()
     		->getRepository('dnsManagerBundle:View')
     		->findOneById($id);
     	
     	$em = $this->getDoctrine()
-    		->getEntityManager();
+    		->getManager();
     	
     	$em->remove($obj);
     	$em->flush();
@@ -140,7 +140,7 @@ class ViewController extends Controller
     	}
     	
     	$zones  = $this->getDoctrine()
-    	->getEntityManager()
+    	->getManager()
     	->createQuery('
     			SELECT z FROM dnsManagerBundle:View z
     				WHERE z.domain LIKE :domain

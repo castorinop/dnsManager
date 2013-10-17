@@ -12,6 +12,7 @@ castorinop\dnsManagerBundle\Entity\ServerView:
         type: string
     tsig:
         type: string
+        nullable: true
     ip:
       type: string
   manyToOne:

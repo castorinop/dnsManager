@@ -1,35 +1,22 @@
 {% for serv in servers %}
-	<div class="accordion-group">
-		<div class="accordion-heading">
-			<a class="accordion-toggle" data-toggle="collapse" data-parent="#list" href="#collapse{{ serv.id }}">
+	<div class="row">
+		<div class="span5"">
 			<h4>
-				{{ serv }} 
+			<a href="{{ path('dns_manager_server_view_show', {'server': serv.id}) }}">{{ serv }}</a>				
 			</h4>
-			</a>
 		</div>
-		<div id="collapse{{ serv.id }}" class="accordion-body collapse ">
-			<div class="accordion-inner">
-					<ul>
-						{% for v in serv.views %}
-							<li>{{ v.type }} {{ v.view }}</li>
-							<code>key "key-{{ v.view }}" {
-								algorithm hmac-md5;
-								secret "{{ v.tsig }}";
-							};
-							
-							</code>
-						{% endfor %}
-					</ul>
-					
-				<div class="zone-tools pull-right">
+		<div class="zone-tools pull-right">
 {# 					<a href="{{ path('dns_manager_zone_edit', {'domain': zone.domain}) }}">edit</a>#}
 {# 					<a href="{{ path('dns_manager_zone', {'domain': zone.domain}) }}">show</a>#}
 {# 					<a href="#">{{  not zone.enable ? 'enable' : 'disable' }}</a>#}
-					<a href="{{ path('dns_manager_server_config', {'server': serv.id}) }}">config</a>
-					<a href="{{ path('dns_manager_server_view_create', {'server': serv.id}) }}">add view</a>
-					<a href="{{ path('dns_manager_server_delete', {'id': serv.id}) }}">delete</a>
-				</div>
-			</div>
+					<a href="{{ path('dns_manager_server_view_show', {'server': serv.id}) }}">
+						<i class="icon-eye-open"></i>show</a>
+					<a href="{{ path('dns_manager_server_config', {'server': serv.id}) }}">
+						<i class="icon-file"></i>config</a>
+{# 					<a href="{{ path('dns_manager_server_view_create', {'server': serv.id}) }}">#}
+{# 						<i class="icon-plus"></i>add view</a>#}
+					<a href="{{ path('dns_manager_server_delete', {'id': serv.id}) }}">
+						<i class="icon-remove"></i>delete</a>
 		</div>
 	</div>                   
 {% endfor %}

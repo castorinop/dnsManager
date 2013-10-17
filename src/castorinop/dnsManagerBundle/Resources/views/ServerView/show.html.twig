@@ -1,0 +1,53 @@
+{% extends 'ToaTwitterBootstrapBundle::layout.html.twig' %}
+{% block title %} {{ server }} {% endblock %}
+{% block content %}
+<div class='clearfix'>
+<div class="pull-left">
+<h2 >{{ server }} <small>server views</small>
+</h2>
+</div>
+	<form class="form-search pull-right" method="post">
+{# 		{% if dom.alias %}#}
+		<a class="btn" href="#newzone" title="add view" data-toggle="modal"><i class="icon-plus"></i></a>
+		<a class="btn" href="{{ path('dns_manager_server_config', {'server': server.id}) }}" title="Config" data-toggle="modal"><i class="icon-file"></i></a>
+{# 		{% else %}#}
+{# 		<div class="input-prepend">#}
+{# 			<a class="btn" href="#newzone" title="Create Host" data-toggle="modal"><i class="icon-plus"></i></a>#}
+{# 		</div>#}
+		
+{# 		<input type="text" id="search" name="search" value='' autocomplete="off" placeholder="Buscar" data-remote="{{ path('dns_manager_host_search', {'domain': dom}) }}">#}
+{# 		<div class="input-append">#}
+{# 	    	<button type="submit" class="btn"><i class="icon-search"></i></button>#}
+{# 	    </div>#}
+{# 	    {% endif %}#}
+	</form>
+</div>
+	<div id="newzone" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h3 id="myModalLabel">New server view</h3>
+		</div>
+		<form class="form-horizontal" action="{{ path('dns_manager_server_view_create') }}" method="post" {{ form_enctype(form) }}>
+		<div class="modal-body">			
+				{{ form_widget(form) }}
+		</div>
+		<div class="modal-footer">
+			<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+			<button class="btn btn-primary">Save changes</button>
+		</div>
+		</form>
+	</div>
+	
+<div>
+	{% for v in server.views %}
+	<div class="row">
+		<div class="span5"><a href="{{ path('dns_manager_view_show', {'id': v.view.id}) }}">{{ v.view }}</a>{% if v.tsig %} tsig{% endif %} {{ v.type }} at {{ v.ip }}</div>
+		<div class="tools pull-right">
+			<a href="{{ path('dns_manager_server_view_edit', {'id': v.id}) }}" title="edit"><i class="icon-edit"></i></a>
+			<a href="{{ path('dns_manager_server_view_delete', {'id': v.id}) }}" title="remove" onclick="return confirm('{{ 'are u sure?'|trans  }}')"><i class="icon-remove"></i></a>
+		</div>
+	</div>
+	{% endfor %}
+</div>
+
+{% endblock %}

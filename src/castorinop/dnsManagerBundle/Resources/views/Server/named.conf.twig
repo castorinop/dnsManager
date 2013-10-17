@@ -1,3 +1,4 @@
+
 # named.conf
 
 # Keys
@@ -15,9 +16,28 @@ key "key-{{ k.view }}" {
 # {{ z.domain }} on {{ z.view }} 
 	zone "{{ z.domain  }}" IN {
 	type {{ z.type }};
+	{% if z.type != 'forward' %}
 	file "{{ z.type }}/{{ z.view }}-{{z.domain }}";
+	{% endif %}
+	{% if z.type == 'master' %}
 	allow-update { key "key-{{ z.view }}"; };
 	allow-transfer { key "key-{{ z.view }}"; };
+	{% elseif z.type == 'slave' %}
+		masters {
+		{% for ip in ips[z.domain].master | default() %}
+			{{ ip }};
+		{% endfor %}
+		};
+	{% elseif z.type == 'forward' %}
+		forwards {
+		{% for ip in ips[z.domain].master | default('') %}
+			{{ ip }};
+		{% endfor %}
+		{% for ip in ips[z.domain].slave | default ('')%}
+			{{ ip }};
+		{% endfor %}
+		};
+	{% endif %}
 };
 
 {% endfor %}

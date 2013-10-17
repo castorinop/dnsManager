@@ -21,6 +21,10 @@ dns_manager_server_config:
 dns_manager_views:
     pattern:  /views
     defaults: { _controller: dnsManagerBundle:View:index }
+
+dns_manager_view_show:
+    pattern:  /view/show/{id}
+    defaults: { _controller: dnsManagerBundle:View:show }
     
 dns_manager_view_create:
     pattern:  /views/create
@@ -32,11 +36,23 @@ dns_manager_view_delete:
 
 dns_manager_server_view_create:
     pattern:  /server/view/create
-    defaults: { _controller: dnsManagerBundle:ServerView:create }
+    defaults: { _controller: dnsManagerBundle:ServerView:update }
     
 dns_manager_server_view_update:
-    pattern:  /server-view/update
+    pattern:  /server-view/update/{id}
     defaults: { _controller: dnsManagerBundle:ServerView:update }
+
+dns_manager_server_view_show:
+    pattern:  /server-view/{server}/show
+    defaults: { _controller: dnsManagerBundle:ServerView:show }
+
+dns_manager_server_view_edit:
+    pattern:  /server-view/edit/{id}
+    defaults: { _controller: dnsManagerBundle:ServerView:edit }
+
+dns_manager_server_view_delete:
+    pattern:  /server-view/delete/{id}
+    defaults: { _controller: dnsManagerBundle:ServerView:delete }
     
 
 dns_manager_zone_import:

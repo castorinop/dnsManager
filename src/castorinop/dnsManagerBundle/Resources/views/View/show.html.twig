@@ -1,0 +1,15 @@
+{% extends 'ToaTwitterBootstrapBundle::layout.html.twig' %}
+{% block title %} {{ view }} View {% endblock %}
+{% block content %}
+<H2>{{ view }}<small>view</small></H2>
+	{% for v in view.servers %}
+	<div class="row">
+		<div class="span5">on <a href="{{ path('dns_manager_server_view_show', {'server': v.server.id}) }}"><strong>{{ v.server }}</strong></a> as {{ v.type }}</div>
+		<div class="zone-tools pull-right">
+			<a href="{{ path('dns_manager_server_view_show', {'server': v.server.id}) }}"><i class="icon-open-eye"></i>show</a>
+			<a href="{{ path('dns_manager_server_view_delete', {'id': v.server.id}) }}"><i class="icon-remove"></i>delete</a>
+		</div>
+	</div>
+	{% endfor %} 		
+
+{% endblock %}

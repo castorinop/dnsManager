@@ -12,7 +12,8 @@
 				<div class="zone-tools pull-right">
 					<a href="{{ path('dns_manager_hostview_edit', {'id': view.id}) }}">edit</a>
 {# 					<a href="{{ path('dns_manager_host', {'domain': view.zone.domain, 'host': view.hostname}) }}">show</a>					#}
- 					<a href="#">delete</a>
+ 					<a href="{{ path('dns_manager_server_view_delete', {'id': view.id}) }}">
+ 					<i class="icon-remove"></i>delete</a>
 				</div>
 			</div>
 		</div>

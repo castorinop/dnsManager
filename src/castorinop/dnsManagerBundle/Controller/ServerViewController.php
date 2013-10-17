@@ -36,7 +36,7 @@ class ServerViewController extends Controller
 			$deep = count($rhosts);
 			
 			$em = $this->getDoctrine()
-			->getEntityManager();
+			->getManager();
 			
 			$rq = $em->createQueryBuilder()
 				->select('r1')
@@ -82,23 +82,24 @@ class ServerViewController extends Controller
         				));
     }
     
-    public function showAction($domain, $host)
+    public function showAction($server)
     {
-    	$record = $this->getHost($domain, $host);
-//     	$rq = $em->createQuery(
-//     			'SELECT r FROM dnsManagerBundle:Record r
-//     				JOIN r.zone z
-//     				WHERE z.domain = :domain
-//     					AND r.hostname = :host');
+    	$em = $this->getDoctrine()->getManager();
     	
-//     	$rq->setParameter('domain', $domain);
-//     	$rq->setParameter('host', $host);
-//     	$record = $rq->getOneOrNullResult();
+    	$s = $em->getRepository('dnsManagerBundle:Server')->find($server);
+    	
+    	$sv = new ServerView();
+    	$sv->setServer($s);
+    	
+    	$form = $this->createForm(new ServerViewType(), $sv);
+    	
+    	if (!$s)
+    		throw $this->createNotFoundException('Server Not Found');
     
-    	return $this->render('dnsManagerBundle:Zone:show.html.twig', 
+    	return $this->render('dnsManagerBundle:ServerView:show.html.twig', 
     			array(
-    					'host' => $record,
-    					'hostname' => $this->getHostname($host),
+    					'server' => $s,
+    					'form' => $form->createView(),
     					)
     			);
     }
@@ -113,39 +114,48 @@ class ServerViewController extends Controller
     public function updateAction($id = NULL)
     {
     	
-    	if ($id) {
+    	if (!$id) 
+    		$record = new ServerView();
+    	else
     		$record = $this->getDoctrine()
-	    		->getEntityManager()
+	    		->getManager()
 	    		->getRepository('dnsManagerBundle:ServerView')
 	    		->findOneById($id);
-    	} else {
-    		$record = new ServerView();
-     		
-    	}
     	 
     	$form = $this->createForm(new ServerViewType(), $record);
     	 
     	$form->bind($this->getRequest());
     	 
     	if ($form->isValid()) {
+    		
     		$em = $this->getDoctrine()
-    			->getEntityManager();
+    			->getManager();
     
     		$em->persist($record);
     		$em->flush();
     
-    		return $this->redirect(
-    				$this->getRequest()->headers->get('referer')
+    		$this->get('session')->getFlashBag()->add('notice', 'server view updated '.$record->getId());
+//     		return $this->redirect(
+//     				$this->getRequest()->headers->get('referer')
 //     				$this->generateUrl('dns_manager_host', 
 //     						array(
 //     								'domain' => $domain, 
 //     								'host' => $record->getHostname()
 //     								)
 //     					)
-    		);
+//     		);
     		//     		return $this->render('dnsManagerBundle:Zone:show.html.twig', array('dom' => $zone));
     	}
-    	 
+    	
+    	$form = $this->createForm(new ServerViewType(), $record);
+    	
+    	return $this->render('dnsManagerBundle:ServerView:edit.html.twig',
+    			array(
+    					'form' => $form->createView(),
+    					'serverview' => $record,
+    			)
+    	);
+    	
     	return $this->redirect(
     			$this->generateUrl('dns_manager_homepage')
     	);
@@ -155,13 +165,17 @@ class ServerViewController extends Controller
     public function editAction($id = NULL)
     {
     	 
-//     	$record = $this->getDoctrine()
-//     		->getEntityManager()
-//     		->getRepository('dnsManagerBundle:ServerView')
-//     		->findOneById($id);	
-//     	if (!$record)
+    	if (!$id) 
     		$record = new ServerView();
-    	 
+    	else
+	    	$record = $this->getDoctrine()
+	    		->getManager()
+	    		->getRepository('dnsManagerBundle:ServerView')
+	    		->findOneById($id);	
+
+    	if (!$record)
+    		throw $this->createNotFoundException('Server View not found');
+    	
     	$form = $this->createForm(new ServerViewType(), $record);
     	 
     	return $this->render('dnsManagerBundle:ServerView:edit.html.twig',
@@ -170,6 +184,33 @@ class ServerViewController extends Controller
     					'serverview' => $record,
     				)
     		);
+    }
+    
+    public function deleteAction($id)
+    {
+    
+    	$em = $this->getDoctrine()
+    	->getManager();
+
+    	$record = 
+    		$em->getRepository('dnsManagerBundle:ServerView')
+    		->find($id);
+    
+    	if (!$record)
+    		throw $this->createNotFoundException('ServerView View not found');
+
+    	
+    	$em->remove($record);
+    	$em->flush();
+    	
+    	$this->get('session')->getFlashbag()->add('notice','server view removed');
+    	
+    	$form = $this->createForm(new ServerViewType(), $record);
+    
+    	
+    	return $this->redirect(
+    			$this->getRequest()->headers->get('referer')
+    	);
     }
     
     public function searchAction($domain) {
@@ -186,7 +227,7 @@ class ServerViewController extends Controller
     	}
     	 
     	$hosts  = $this->getDoctrine()
-	    	->getEntityManager()
+	    	->getManager()
   	  	->createQuery('
     			SELECT h FROM dnsManagerBundle:Record h
   	  			JOIN h.zone z

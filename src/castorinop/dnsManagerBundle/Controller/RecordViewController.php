@@ -36,7 +36,7 @@ class RecordViewController extends Controller
 			$deep = count($rhosts);
 			
 			$em = $this->getDoctrine()
-			->getEntityManager();
+			->getManager();
 			
 			$rq = $em->createQueryBuilder()
 				->select('r1')
@@ -108,7 +108,7 @@ class RecordViewController extends Controller
     	
     	if ($id) {
     		$record = $this->getDoctrine()
-	    		->getEntityManager()
+	    		->getManager()
 	    		->getRepository('dnsManagerBundle:RecordView')
 	    		->findOneById($id);
     	} else {
@@ -122,7 +122,7 @@ class RecordViewController extends Controller
     	 
     	if ($form->isValid()) {
     		$em = $this->getDoctrine()
-    			->getEntityManager();
+    			->getManager();
     
     		$em->persist($record);
     		
@@ -154,7 +154,7 @@ class RecordViewController extends Controller
     {
     	 
     	$record = $this->getDoctrine()
-    		->getEntityManager()
+    		->getManager()
     		->getRepository('dnsManagerBundle:RecordView')
     		->findOneById($id);	
     	 
@@ -182,7 +182,7 @@ class RecordViewController extends Controller
     	}
     	 
     	$hosts  = $this->getDoctrine()
-	    	->getEntityManager()
+	    	->getManager()
   	  	->createQuery('
     			SELECT h FROM dnsManagerBundle:Record h
   	  			JOIN h.zone z

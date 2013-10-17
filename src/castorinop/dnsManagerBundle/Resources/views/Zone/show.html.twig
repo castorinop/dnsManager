@@ -4,7 +4,7 @@
 {% block content %}
 <div class='clearfix'>
 <div class="pull-left">
-<h2 >{{ domain }} <small>{% if dom.alias %} Alias  {% endif %}Zone</small>
+<h2>{{ domain }} <small>{% if dom.alias %} Alias  {% endif %}Zone</small>
 </h2>
 <h6>
 {% if dom.alias %}
@@ -22,14 +22,14 @@
 		{% if dom.alias %}
 		<a class="btn" href="{{ path('dns_manager_zone_delete', {'id': dom.id}) }}" title="Remove Zone" data-toggle="modal"><i class="icon-remove"></i></a>
 		{% else %}
-		<div class="input-prepend">
+{# 		<div class="input-prepend">#}
 			<a class="btn" href="#newzone" title="Create Host" data-toggle="modal"><i class="icon-plus"></i></a>
-		</div>
+{# 		</div>#}
 		
-		<input type="text" id="search" name="search" value='' autocomplete="off" placeholder="Buscar" data-remote="{{ path('dns_manager_host_search', {'domain': dom}) }}">
-		<div class="input-append">
-	    	<button type="submit" class="btn"><i class="icon-search"></i></button>
-	    </div>
+{# 		<input type="text" id="search" name="search" value='' autocomplete="off" placeholder="Buscar" data-remote="{{ path('dns_manager_host_search', {'domain': dom}) }}">#}
+{# 		<div class="input-append">#}
+{# 	    	<button type="submit" class="btn"><i class="icon-search"></i></button>#}
+{# 	    </div>#}
 	    {% endif %}
 	</form>
 </div>

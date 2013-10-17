@@ -35,7 +35,7 @@ class HostController extends Controller
 			$deep = count($rhosts);
 			
 			$em = $this->getDoctrine()
-			->getEntityManager();
+			->getManager();
 			
 			$rq = $em->createQueryBuilder()
 				->select('r1')
@@ -111,7 +111,7 @@ class HostController extends Controller
     		->getRepository('dnsManagerBundle:Record')->find($id);
 //     	if ($host) {
 //     		$record = $this->getDoctrine()
-// 	    	->getEntityManager()
+// 	    	->getManager()
 //   	  	->createQuery('
 //     			SELECT h FROM dnsManagerBundle:Record h
 //   	  			JOIN h.zone z
@@ -124,7 +124,7 @@ class HostController extends Controller
 //     	} else {
 //     		$record = new Record();
 //     		$zone = $this->getDoctrine()
-//     		->getEntityManager()
+//     		->getManager()
 //     		->getRepository('dnsManagerBundle:Zone')
 //     		->findOneByDomain($domain);
 //     		$record->setZone($zone);
@@ -146,7 +146,7 @@ class HostController extends Controller
     	 
     	if ($form->isValid()) {
     		$em = $this->getDoctrine()
-    			->getEntityManager();
+    			->getManager();
 
     		// filter $oRV to contain tags no longer present
     		foreach ($record->getViews() as $rv) {
@@ -216,11 +216,11 @@ class HostController extends Controller
     public function editAction($id)
     {
 
-    	$em = $this->getDoctrine()->getEntityManager();
+    	$em = $this->getDoctrine()->getManager();
     	
     	$record = $em->getRepository('dnsManagerBundle:Record')->find($id);
     	
-//     	->getEntityManager()
+//     	->getManager()
 //     	->createQuery('
 //     			SELECT h FROM dnsManagerBundle:Record h
 //   	  			JOIN h.zone z
@@ -259,7 +259,7 @@ class HostController extends Controller
     	}
     	 
     	$hosts  = $this->getDoctrine()
-	    	->getEntityManager()
+	    	->getManager()
   	  	->createQuery('
     			SELECT h FROM dnsManagerBundle:Record h
   	  			JOIN h.zone z

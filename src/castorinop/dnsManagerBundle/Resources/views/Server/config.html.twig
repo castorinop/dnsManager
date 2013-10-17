@@ -2,7 +2,7 @@
 {% block title %} Server {{ server }} config {% endblock %}
 {% block content %}
 <div class="container">
-	<h2 class="pull-left">{{ server }}<small>server</small></h2>
+	<h2 class="pull-left"><a href="{{ path('dns_manager_server_view_show', {'server': server.id}) }}">{{ server }}</a><small>server</small></h2>
 	<form class="form-search pull-right" method="post">
 {# 	FIXME: add deploy		<div>#}
 {# 				<a class="btn" href="#deployzone" title="Deploy Zone" data-toggle="modal"><i class="icon-download"></i></a>#}

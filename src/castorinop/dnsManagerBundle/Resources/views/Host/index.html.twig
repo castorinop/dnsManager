@@ -53,14 +53,14 @@
 	<div id="views" class="tab-pane">
 	<div class="clearfix">
 	<form class="form-search pull-right" method="post">
-			<div class="input-prepend">
+{# 			<div class="input-prepend">#}
 				<a class="btn" href="#newview" title="New View" data-toggle="modal"><i class="icon-plus-sign"></i></a>
 				
-				</div>								
-				<input type="text" id="search" name="search" value='' autocomplete="off" placeholder="Buscar" data-remote="{{ path('dns_manager_zone_search') }}">
-				<div class="input-append">
-		    <button type="submit" class="btn"><i class="icon-search"></i></button>
-		    </div>
+{# 				</div>								#}
+{# 				<input type="text" id="search" name="search" value='' autocomplete="off" placeholder="Buscar" data-remote="{{ path('dns_manager_zone_search') }}">#}
+{# 				<div class="input-append">#}
+{# 		    <button type="submit" class="btn"><i class="icon-search"></i></button>#}
+{# 		    </div>#}
 	</form>
 	</div>
 		<div class="accordion" id="view-list">
@@ -73,13 +73,13 @@
 		<div class="accordion" id="record-list">
 		<div class="clearfix">
 		<form class="form-search pull-right" method="post">
-			<div class="input-prepend">
+{# 			<div class="input-prepend">#}
 				<a class="btn" href="#newhost" title="New Host" data-toggle="modal"><i class="icon-plus"></i></a>
-				</div>
-				<input type="text" id="search" name="search" value='' autocomplete="off" placeholder="Buscar" data-remote="{{ path('dns_manager_zone_search') }}">
-				<div class="input-append">
-		    <button type="submit" class="btn"><i class="icon-search"></i></button>
-		    </div>
+{# 				</div>#}
+{# 				<input type="text" id="search" name="search" value='' autocomplete="off" placeholder="Buscar" data-remote="{{ path('dns_manager_zone_search') }}">#}
+{# 				<div class="input-append">#}
+{# 		    <button type="submit" class="btn"><i class="icon-search"></i></button>#}
+{# 		    </div>#}
 		    </div>										
 	</form>
 		{% set records = host.subdomains %}

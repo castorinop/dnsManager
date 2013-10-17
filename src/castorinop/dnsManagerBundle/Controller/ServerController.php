@@ -23,7 +23,7 @@ class ServerController extends Controller
     		$form = $this->createForm(new ServerType(), $zone);
     		
     		$servers = $this->getDoctrine()
-    			->getEntityManager()
+    			->getManager()
     			->getRepository('dnsManagerBundle:Server')->findAll();
     		
         return $this->render('dnsManagerBundle:Server:index.html.twig', 
@@ -37,7 +37,7 @@ class ServerController extends Controller
     {
     	
     	$zone = $this->getDoctrine()
-    	->getEntityManager()
+    	->getManager()
     	->getRepository('dnsManagerBundle:Server')
     	->findOneByDomain($domain);
     
@@ -62,7 +62,7 @@ class ServerController extends Controller
     {
     	if ($id) {
     		$zone = $this->getDoctrine()
-    		->getEntityManager()
+    		->getManager()
     		->getRepository('dnsManagerBundle:Server')
     		->findOneById($id);
       } else 
@@ -74,7 +74,7 @@ class ServerController extends Controller
     	
     	if ($form->isValid()) {
     		$em = $this->getDoctrine()
-    			->getEntityManager();
+    			->getManager();
     		
     		$em->persist($zone);
     		$em->flush();
@@ -96,7 +96,7 @@ class ServerController extends Controller
     {
     	
     	$zone  = $this->getDoctrine()
-    		->getEntityManager()
+    		->getManager()
     		->getRepository('dnsManagerBundle:Server')
     		->findOneByDomain($domain);
     	
@@ -109,12 +109,12 @@ class ServerController extends Controller
     
     public function deleteAction($id) {
     	$obj = $this->getDoctrine()
-    	->getEntityManager()
+    	->getManager()
     	->getRepository('dnsManagerBundle:Server')
     	->findOneById($id);
     
     	$em = $this->getDoctrine()
-    	->getEntityManager();
+    	->getManager();
     
     	$em->remove($obj);
     	$em->flush();
@@ -139,7 +139,7 @@ class ServerController extends Controller
     	}
     	
     	$zones  = $this->getDoctrine()
-    	->getEntityManager()
+    	->getManager()
     	->createQuery('
     			SELECT z FROM dnsManagerBundle:Server z
     				WHERE z.domain LIKE :domain
@@ -156,7 +156,11 @@ class ServerController extends Controller
     public function configAction($server) {
     	$as = array();
     	
-    	$em = $this->getDoctrine()->getEntityManager();
+    	$have_master = false;
+    	$ips= array();
+    	$zones = array();
+    	
+    	$em = $this->getDoctrine()->getManager();
     	
     	$srv = $em->getRepository('dnsManagerBundle:Server')->find($server);
     	#FIXME: wait doctrine 2.4 and use SELECT NEW http://docs.doctrine-project.org/en/latest/reference/dql-doctrine-query-language.html#new-operator-syntax
@@ -168,24 +172,44 @@ class ServerController extends Controller
     						JOIN v.servers sv
     						JOIN sv.server s
 	    					WHERE s.id  = :server
-    						GROUP BY v.id
+    						GROUP BY z.id, sv.type
+    						
 	    				");
     	$rq->setParameter('server', $server);
     	$views = $rq->getResult();
     	
+    	$s = $em->getRepository('dnsManagerBundle:Server')->find($server);
+    	
+    	foreach ($s->getViews() as $v) {
+    		
+    	}
+    	
     	foreach ($views as $z) {
-    		$r = $z->getRecords()->first();
-    		$rv = $r->getViews()->first();
+    		foreach ($z->getRecords() as $r)
+    			foreach ($r->getViews() as $rv) {
+    			$this->get('logger')->info($r." ".$rv);
+//     		$r = $z->getRecords()->first();
+//     		$rv = $r->getViews()->first();
     		$v = $rv->getView();
     		
     		foreach ($v->getServers() as $sv) {
-    			$as[] = clone $sv;
+    			if (!in_array($sv->getKeyValue(), $as))
+    				$as[$sv->getKeyValue()] = clone $sv;
     			
-    			$zones = array($z);
+    			if ($sv->getType() == 'master')
+    				$have_master = true;
+    			$this->get('logger')->info($z->getDomain()."[".$sv->getType()."] = ".$sv->getIp());
+    			if (!@in_array($sv->getIp(), $ips[$z->getDomain()][$sv->getType()]))
+    				$ips[$z->getDomain()][$sv->getType()][] = $sv->getIp();
+    			
+    			if (!in_array($z, $zones))
+    				$zones[] = $z;
     			foreach ($z->getAliases() as $a)
-	    			$zones[] = $a;
+    				if (!in_array($a, $zones))
+	    				$zones[] = $a;
 	    			
     			foreach ($zones as $zone) {
+    				$this->get('logger')->info("zones ".$zone->getDomain());
 	    			$item = new \stdClass();
 	    			$item->domain = $zone->getDomain();
 	    			$item->tsig = $sv->getTsig();
@@ -194,12 +218,19 @@ class ServerController extends Controller
 	    			$item->ip = $sv->getIp();
 	    			$item->name = $sv->getServer()->getName();
 	    			$l[] = clone $item;
+	    			if (!@in_array($sv->getIp(), $ips[$zone->getDomain()][$sv->getType()]))
+	    					$ips[$zone->getDomain()][$sv->getType()][] = $sv->getIp();
     			}
     		}
     	}
+    }
+    	
+    	if (!$have_master)
+    		$this->get('session')->getFlashBag()->add('error', 'dont have a master');
     	
     	return $this->render('dnsManagerBundle:Server:config.html.twig', 
     			array('rows' => $l,
+    				'ips' => $ips,
     				'keys' => $as,
     				'server' => $srv));
     }

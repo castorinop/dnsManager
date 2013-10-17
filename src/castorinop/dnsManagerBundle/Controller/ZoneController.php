@@ -38,7 +38,7 @@ class ZoneController extends Controller
 		if (!$alias)
 			$alias = $zone;
 		
-		$em = $this->getDoctrine()->getEntityManager();
+		$em = $this->getDoctrine()->getManager();
 		$rq = $em->createQuery(
 				"SELECT v,rv,r FROM dnsManagerBundle:View v
     						JOIN v.records rv
@@ -114,7 +114,7 @@ class ZoneController extends Controller
     		$import = $this->createForm(new ZoneImportType());
     		
     		$doms = $this->getDoctrine()
-    			->getEntityManager()
+    			->getManager()
     			->getRepository('dnsManagerBundle:Zone')->findBy(
 					array('alias' => NULL) 	
     		);
@@ -130,7 +130,7 @@ class ZoneController extends Controller
     public function showAction($domain, $view = NULL)
     {
     	$em = $this->getDoctrine()
-    	->getEntityManager();
+    	->getManager();
     	
     	$rq = $em->createQueryBuilder()
     		->select('z,r,rv')
@@ -256,7 +256,7 @@ class ZoneController extends Controller
     	//
     	// loop through the answer, printing out each resource record.
     	//
-    	$em = $this->getDoctrine()->getEntityManager();
+    	$em = $this->getDoctrine()->getManager();
     	
     	
     	$v = $em->getRepository('dnsManagerBundle:View')->find($params['view']);
@@ -400,7 +400,7 @@ class ZoneController extends Controller
     {
     	if ($domain) {
     		$zone = $this->getDoctrine()
-    		->getEntityManager()
+    		->getManager()
     		->getRepository('dnsManagerBundle:Zone')
     		->findOneByDomain($domain);
       } else 
@@ -412,7 +412,7 @@ class ZoneController extends Controller
     	
     	if ($form->isValid()) {
     		$em = $this->getDoctrine()
-    			->getEntityManager();
+    			->getManager();
     		
     		#FIXME: Force update serial really ?
     		$zone->setSerial();
@@ -436,7 +436,7 @@ class ZoneController extends Controller
     {
     	
     	$zone  = $this->getDoctrine()
-    		->getEntityManager()
+    		->getManager()
     		->getRepository('dnsManagerBundle:Zone')
     		->findOneByDomain($domain);
     	
@@ -449,12 +449,12 @@ class ZoneController extends Controller
     
     public function deleteAction($id) {
     	$obj = $this->getDoctrine()
-    	->getEntityManager()
+    	->getManager()
     	->getRepository('dnsManagerBundle:Zone')
     	->findOneById($id);
     	 
     	$em = $this->getDoctrine()
-    	->getEntityManager();
+    	->getManager();
     	 
     	$em->remove($obj);
     	$em->flush();
@@ -478,7 +478,7 @@ class ZoneController extends Controller
     	}
     	
     	$zones  = $this->getDoctrine()
-    	->getEntityManager()
+    	->getManager()
     	->createQuery('
     			SELECT z FROM dnsManagerBundle:Zone z
     				WHERE z.domain LIKE :domain

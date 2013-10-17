@@ -1,7 +1,8 @@
 {% extends 'ToaTwitterBootstrapBundle::layout.html.twig' %}
 {% block title %} Edit View {% endblock %}
 {% block content %}
-		<form class="form-horizontal" action="{{ path('dns_manager_server_view_update', {'server': serverview.id}) }}" method="post" {{ form_enctype(form) }}>
+<h2><a href="{{ path('dns_manager_server_view_show', {'server': serverview.server.id}) }}">{{ serverview.server }}</a><small>server view</small</h2>
+		<form class="form-horizontal" action="{{ path('dns_manager_server_view_update', {'id': serverview.id}) }}" method="post" {{ form_enctype(form) }}>
 		<div>			
 				{{ form_widget(form) }}
 		</div>
