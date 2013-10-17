@@ -22,8 +22,8 @@ class AppKernel extends Kernel
             new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
             new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
             new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
-            new Toa\Bundle\TwitterBootstrapBundle\ToaTwitterBootstrapBundle(),
-	    new castorinop\dnsManagerBundle\dnsManagerBundle(),
+        	new Twitter\BootstrapBundle\TwitterBootstrapBundle(),
+            new castorinop\dnsManagerBundle\dnsManagerBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

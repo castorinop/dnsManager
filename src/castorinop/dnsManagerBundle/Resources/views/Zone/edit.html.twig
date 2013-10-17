@@ -1,4 +1,4 @@
-{% extends 'ToaTwitterBootstrapBundle::layout.html.twig' %}
+{% extends '::layout.html.twig' %}
 {% block title %} Edit Zone {% endblock %}
 {% block content %}
 		<form class="form-horizontal" action="{{ path('dns_manager_zone_update', {'domain': domain}) }}" method="post" {{ form_enctype(form) }}>
