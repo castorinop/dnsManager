@@ -22,6 +22,7 @@ use Net_DNS2\Net\DNS2\Resolver;
 use castorinop\dnsManagerBundle\Entity\RecordView;
 use Symfony\Component\Validator\Constraints\Null;
 use castorinop\dnsManagerBundle\Entity\View;
+use castorinop\dnsManagerBundle\Form\ZoneAliasType;
 
 class ZoneController extends Controller
 {
@@ -167,7 +168,11 @@ class ZoneController extends Controller
     	$host = new Record();
     	$host->setZone($zone);
     	
+    	$alias = new Zone();
+    	$alias->setAlias($zone);
+    	
     	$form = $this->createForm(new RecordType(), $host);
+    	$frmAlias = $this->createForm(new ZoneAliasType(), $alias);
 
 //     	$v = $em->getRepository('dnsManagerBundle:View')->findAll();
     	$rq = $em->createQuery(
@@ -188,7 +193,8 @@ class ZoneController extends Controller
     						'domain' => $domain,
     						'views' => $v,
     						'view' => $view,
-    						'form' => $form->createView()
+    						'form' => $form->createView(),
+    						'frmAlias' => $frmAlias->createView()
     				)
     			);
     }
@@ -405,8 +411,11 @@ class ZoneController extends Controller
     		->findOneByDomain($domain);
       } else 
     		$zone = new Zone();
+      
+      	$frmType = ($this->getRequest()->get('alias', false) ? new ZoneAliasType() : new ZoneType());
+      		 
     	
-    	$form = $this->createForm(new ZoneType(), $zone);
+    	$form = $this->createForm($frmType, $zone);
     	
     	$form->bind($this->getRequest());
     	
@@ -416,9 +425,16 @@ class ZoneController extends Controller
     		
     		#FIXME: Force update serial really ?
     		$zone->setSerial();
+    		# is alias
+    		if($this->getRequest()->get('alias', false)) {
+    			$zone->setSoa('');
+    			$zone->setMail('');
+    		}
     		
     		$em->persist($zone);
     		$em->flush();
+    		
+    		$this->get('session')->getflashBag()->add('success', 'zone created');
     		
     		return $this->redirect(
 	     				$this->generateUrl('dns_manager_zone', array('domain' => $zone->getDomain()))

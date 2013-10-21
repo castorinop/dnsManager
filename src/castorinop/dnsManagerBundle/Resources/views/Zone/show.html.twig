@@ -24,6 +24,7 @@
 		{% else %}
 {# 		<div class="input-prepend">#}
 			<a class="btn" href="#newzone" title="Create Host" data-toggle="modal"><i class="icon-plus"></i></a>
+			<a class="btn" href="#aliaszone" title="Create Alias" data-toggle="modal"><i class="icon-retweet"></i></a>
 {# 		</div>#}
 		
 {# 		<input type="text" id="search" name="search" value='' autocomplete="off" placeholder="Buscar" data-remote="{{ path('dns_manager_host_search', {'domain': dom}) }}">#}
@@ -41,6 +42,22 @@
 		<form class="form-horizontal" action="{{ path('dns_manager_host_create', {'domain': dom}) }}" method="post" {{ form_enctype(form) }}>
 		<div class="modal-body">			
 				{{ form_widget(form) }}
+		</div>
+		<div class="modal-footer">
+			<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+			<button class="btn btn-primary">Save changes</button>
+		</div>
+		</form>
+	</div>
+	<div id="aliaszone" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h3 id="myModalLabel">New Alias</h3>
+		</div>
+		<form class="form-horizontal" action="{{ path('dns_manager_zone_create') }}" method="post" {{ form_enctype(frmAlias) }}>
+		<div class="modal-body">			
+				{{ form_widget(frmAlias) }}
+				<input type="hidden" name="alias" value="true"/>
 		</div>
 		<div class="modal-footer">
 			<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
