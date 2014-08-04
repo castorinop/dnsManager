@@ -12,6 +12,8 @@ use castorinop\dnsManagerBundle\Form\RecordType;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
+use Symfony\Component\HttpFoundation\Response;
+
 class HostController extends Controller
 {
 
@@ -275,6 +277,18 @@ class HostController extends Controller
     		array('records' => $hosts));
     }
     
-    
+    public function deleteAction(Record $host) {
+    	
+    	$ret = $host->getZone()->getDomain();
+    	$em = $this->getDoctrine()->getManager();
+    	
+    	$this->get('session')->getFlashBag()->add(
+    			'notice', sprintf('removed %s.%s', $host->getHostname(),$ret));
+    	$em->remove($host);
+    	$em->flush();
+    	
+    	return $this->redirect($this->generateUrl('dns_manager_zone', array('domain' => $ret) ));
+    	
+    }
 }
 

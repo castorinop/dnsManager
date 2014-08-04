@@ -6,6 +6,8 @@
 					{{ record.hostname }}
 				</a>
 			</strong>
+		</div>
+	</div>
 			{% for v in record.views %}
 				<div class="row">
 					<div class="span1">	</div>
@@ -23,21 +25,4 @@
 				</div>
 			{% endfor %}
 
-	</div>
-{# 			{% for subd in record.subdomains %}#}
-{# 				<li><a href="{{ path('dns_manager_host', {'domain': domain, 'host': record ~"/"~ subd.hostname}) }}">{{ subd.hostname }}</a></li>#}
-{# 			{% endfor %}#}
-{# 			</ul>#}
-{# 			</div>#}
-{# 			{% set host = hostname is defined ? hostname ~ "/" ~ record.hostname : record.hostname %}#}
-{# 				<div class="zone-tools pull-right">#}
-{# 					<a href="{{ path('dns_manager_host_edit', {'domain': domain, 'host': record.url(false)|reverse|join('/') }) }}">edit</a>#}
-{# 					<a href="{{ path('dns_manager_host', {'domain': domain, 'host': record.url(false)|reverse|join('/') }) }}">show</a>#}
-{# 					<a href="#">{{  not record.enable ? 'enable' : 'disable' }}</a>#}
-{# 					<a href="#">delete</a>#}
-{# 				</div>#}
-{# 			</div>#}
-{# 		</div>#}
-{# 	</div>                   #}
-</div>
 {% endfor %}

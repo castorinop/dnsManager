@@ -105,6 +105,12 @@ dns_manager_host_edit:
       host: .*
     defaults: { _controller: dnsManagerBundle:Host:edit }
 
+dns_manager_host_delete:
+    pattern:  /host/delete/{id}
+    requirements:
+      host: .*
+    defaults: { _controller: dnsManagerBundle:Host:delete }
+
 dns_manager_host:
     pattern:  /zone/{domain}/{host}
     requirements:
