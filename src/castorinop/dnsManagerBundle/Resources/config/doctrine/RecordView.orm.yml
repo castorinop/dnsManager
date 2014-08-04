@@ -25,9 +25,9 @@ castorinop\dnsManagerBundle\Entity\RecordView:
     records:
       targetEntity: Record
       inversedBy: views
-      cascade: [ persist, remove ]
+      cascade: [ persist ]
     view:
       targetEntity: View
       inversedBy: records
-      cascade: [ persist, remove ]
+      cascade: [ persist ]
       

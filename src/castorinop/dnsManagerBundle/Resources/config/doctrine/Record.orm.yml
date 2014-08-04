@@ -24,7 +24,7 @@ castorinop\dnsManagerBundle\Entity\Record:
     views:
       targetEntity: RecordView
       mappedBy: records
-      cascade: [ persist ]
+      cascade: [ persist, remove ]
     subdomains:
       targetEntity:  Record
       mappedBy: domain
